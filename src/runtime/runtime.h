@@ -2,22 +2,26 @@
 #define RUNTIME_H
 
 #define MAX_PLAYERS 5
-
-#include "../semaphore/semaphore.h"
+#define MIN_PLAYERS 2
 
 /*
  * @brief Ask to use how many player will play.
  * * Will show a message on Terminal and read the user response to return the
  * number of players.
- * @return Number of player of the game
+ * @return Number of player of the game.
  */
-short ask_player_number(int x, int y);
+short ask_player_number();
 
 /*
- * @brief Exit of the game
- * * Function to safety exit of the game
- * @param s The semaphore of the game
+ * @brief Init the game.
+ * * Will initialize the game engine.
  */
-void exit_game(semaphore **s);
+void init_game();
+
+/*
+ * @brief Exit of the game.
+ * * Safety exit of the game engine.
+ */
+void exit_game();
 
 #endif
