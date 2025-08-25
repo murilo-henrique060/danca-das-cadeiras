@@ -1,6 +1,5 @@
 #include <ctype.h>
 #include <ncurses.h>
-#include <stdio.h>
 #include <unistd.h>
 
 #include "runtime.h"
@@ -101,4 +100,11 @@ short get_number_of_players(unsigned char players) {
 
 unsigned char remove_player(unsigned char players, int removed_player) {
   return (players & ~removed_player); // AND gate to remove a player
+}
+
+unsigned short player_is_active(unsigned char players, int current_player) {
+  if (players & current_player)
+    return 1;
+  else
+    return 0;
 }

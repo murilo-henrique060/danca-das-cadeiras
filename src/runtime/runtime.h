@@ -34,6 +34,7 @@ short ask_player_number();
  * @brief Get active players.
  * * Get how many players is in the game.
  * @param players Number to represent active players.
+ * @return Number of active players.
  */
 short get_number_of_players(unsigned char players);
 
@@ -42,7 +43,17 @@ short get_number_of_players(unsigned char players);
  * * Remove a player from active players.
  * @param players Number to represent active players.
  * @param removed_player Player to remove.
+ * @return New active players.
  */
 unsigned char remove_player(unsigned char players, int removed_player);
+
+/*
+ * @brief Check a player.
+ * * Check if the player is a active players.
+ * @param players Number to represent active players.
+ * @param current_player Player to analyze.
+ * @return 1 if player is in active players, else, return 0.
+ */
+unsigned short player_is_active(unsigned char players, int current_player);
 
 #endif
