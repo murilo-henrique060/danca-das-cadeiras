@@ -12,6 +12,8 @@ WINDOW *create_window(int start_y, int start_x, int height, int width) {
   return local_window;
 }
 
+void delete_window(WINDOW *window) { delwin(window); }
+
 WINDOW *create_text_window(char *text, int start_y, int start_x, int height,
                            int width) {
   // calcule to start text
@@ -27,8 +29,11 @@ WINDOW *create_text_window(char *text, int start_y, int start_x, int height,
   return local_window;
 }
 
-void print_menu() {
+WINDOW *print_menu() {
   WINDOW *local_window =
       create_text_window(GAME_NAME, 0, 0, MENU_HEIGHT, MENU_WIDTH);
+  // show the menu
   wrefresh(local_window);
+
+  return local_window;
 }

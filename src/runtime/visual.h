@@ -1,12 +1,12 @@
-#ifndef UI_H
-#define UI_H
+#ifndef VISUAL_H
+#define VISUAL_H
 
 #include <ncurses.h>
 
 #define GAME_NAME "Dança das Cadeiras"
 
-const int MENU_HEIGHT = 3;
-const int MENU_WIDTH = 60;
+#define MENU_HEIGHT 3
+#define MENU_WIDTH 60
 
 /*
  * @brief Create a virtual window.
@@ -18,6 +18,12 @@ const int MENU_WIDTH = 60;
  * @return Return a new window.
  */
 WINDOW *create_window(int start_y, int start_x, int height, int width);
+
+/*
+ * @brief Delete a window
+ * * Use to delete a created window
+ */
+void delete_window(WINDOW *window);
 
 /*
  * @brief Create a virtual window.
@@ -35,7 +41,8 @@ WINDOW *create_text_window(char *text, int start_y, int start_x, int height,
 /*
  * @brief Show the main menu.
  * * Show Main menu of the game.
+ * @return Window with Game menu.
  */
-void print_menu();
+WINDOW *print_menu();
 
 #endif
