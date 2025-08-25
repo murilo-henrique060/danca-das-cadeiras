@@ -5,6 +5,35 @@
 #include "runtime.h"
 #include "visual.h"
 
+void init_game() {
+
+  // init the ncurses
+  initscr();
+  noecho();
+  curs_set(0);
+
+  // if the terminal has colors
+  if (has_colors())
+    start_color();
+
+  // update the terminal
+  refresh();
+}
+
+void exit_game() {
+
+  // clear the terminal
+  clear();
+
+  // show to user the finish message
+  printw("Saindo do jogo...\n");
+  refresh();
+  sleep(2);
+
+  // finish the ncurses
+  endwin();
+}
+
 short ask_player_number() {
   char response = '0';
   short choiced_number = -1;
@@ -54,33 +83,4 @@ short ask_player_number() {
   sleep(1);
 
   return choiced_number;
-}
-
-void init_game() {
-
-  // init the ncurses
-  initscr();
-  noecho();
-  curs_set(0);
-
-  // if the terminal has colors
-  if (has_colors())
-    start_color();
-
-  // update the terminal
-  refresh();
-}
-
-void exit_game() {
-
-  // clear the terminal
-  clear();
-
-  // show to user the finish message
-  printw("Saindo do jogo...\n");
-  refresh();
-  sleep(2);
-
-  // finish the ncurses
-  endwin();
 }
