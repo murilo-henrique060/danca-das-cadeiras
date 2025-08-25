@@ -4,11 +4,11 @@
 #define MAX_PLAYERS 5
 #define MIN_PLAYERS 2
 
-#define PLAYER_1 (1 << 0) // 0b00001
-#define PLAYER_2 (1 << 1) // 0b00010
-#define PLAYER_3 (1 << 2) // 0b00100
-#define PLAYER_4 (1 << 3) // 0b01000
-#define PLAYER_5 (1 << 4) // 0b10000
+#define PLAYER_1 (1 << 0) // 0b00000001
+#define PLAYER_2 (1 << 1) // 0b00000010
+#define PLAYER_3 (1 << 2) // 0b00000100
+#define PLAYER_4 (1 << 3) // 0b00001000
+#define PLAYER_5 (1 << 4) // 0b00010000
 
 /*
  * @brief Init the game.
@@ -44,4 +44,5 @@ short get_number_of_players(unsigned char players);
  * @param removed_player Player to remove.
  */
 unsigned char remove_player(unsigned char players, int removed_player);
+
 #endif

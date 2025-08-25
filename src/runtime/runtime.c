@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <ncurses.h>
+#include <stdio.h>
 #include <unistd.h>
 
 #include "runtime.h"
@@ -83,4 +84,21 @@ short ask_player_number() {
   sleep(1);
 
   return choiced_number;
+}
+
+short get_number_of_players(unsigned char players) {
+  unsigned short counter = 0;
+  unsigned char all_players[] = {PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4,
+                                 PLAYER_5};
+
+  for (int i = 0; i < MAX_PLAYERS; i++) {
+    if (all_players[i] & players) // AND gate with players
+      counter++;
+  }
+
+  return counter;
+}
+
+unsigned char remove_player(unsigned char players, int removed_player) {
+  return (players & ~removed_player); // AND gate to remove a player
 }
