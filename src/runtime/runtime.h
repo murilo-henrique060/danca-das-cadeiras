@@ -12,6 +12,8 @@
 #define PLAYER_4 (1 << 3) // 0b00001000
 #define PLAYER_5 (1 << 4) // 0b00010000
 
+#define PLAYERS_ARRAY {PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4, PLAYER_5}
+
 /*
  * @brief Init the game.
  * * Will initialize the game engine.
@@ -57,6 +59,14 @@ unsigned char remove_player(unsigned char players, int removed_player);
  * @return 1 if player is in active players, else, return 0.
  */
 unsigned short player_is_active(unsigned char players, int current_player);
+
+/*
+ * @brief Initialize players.
+ * * Will initialize all players.
+ * @param players Number to represent active players.
+ * @return All players activated.
+ */
+unsigned char start_players(int number_of_players);
 
 /*
  * @brief Start a counter.

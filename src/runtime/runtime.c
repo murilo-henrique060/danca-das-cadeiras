@@ -87,8 +87,7 @@ short ask_player_number() {
 
 short get_number_of_players(unsigned char players) {
   unsigned short counter = 0;
-  unsigned char all_players[] = {PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4,
-                                 PLAYER_5};
+  unsigned char all_players[] = PLAYERS_ARRAY;
 
   for (int i = 0; i < MAX_PLAYERS; i++) {
     if (all_players[i] & players) // AND gate with players
@@ -107,6 +106,16 @@ unsigned short player_is_active(unsigned char players, int current_player) {
     return 1;
   else
     return 0;
+}
+
+unsigned char start_players(int number_of_players) {
+  unsigned char players = 0;
+  unsigned char all_players[] = PLAYERS_ARRAY;
+
+  for (int i = 0; i < number_of_players; i++)
+    players |= all_players[i]; // OR gate to activate player
+
+  return players;
 }
 
 void start_round_counter() {
