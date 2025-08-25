@@ -108,3 +108,18 @@ unsigned short player_is_active(unsigned char players, int current_player) {
   else
     return 0;
 }
+
+void start_round_counter() {
+  clear();
+  printw("Iniciando próximo round (aperte qualquer tecla) \n");
+  getch();
+
+  for (int i = TIME_TO_START_ROUND; i > 0; i--) {
+    printw("%d\n", i);
+    refresh();
+    sleep(1);
+  }
+
+  printw("APERTE!!!!\n");
+  refresh();
+}

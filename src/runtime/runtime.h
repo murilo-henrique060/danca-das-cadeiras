@@ -4,6 +4,8 @@
 #define MAX_PLAYERS 5
 #define MIN_PLAYERS 2
 
+#define TIME_TO_START_ROUND 5
+
 #define PLAYER_1 (1 << 0) // 0b00000001
 #define PLAYER_2 (1 << 1) // 0b00000010
 #define PLAYER_3 (1 << 2) // 0b00000100
@@ -55,5 +57,11 @@ unsigned char remove_player(unsigned char players, int removed_player);
  * @return 1 if player is in active players, else, return 0.
  */
 unsigned short player_is_active(unsigned char players, int current_player);
+
+/*
+ * @brief Start a counter.
+ * * Start a counter to start the round.
+ */
+void start_round_counter();
 
 #endif
