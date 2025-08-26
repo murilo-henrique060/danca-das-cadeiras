@@ -1,41 +1,80 @@
-#include "semaphore/semaphore.h"
 #include "listener/listener.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "runtime/runtime.h"
+#include "semaphore/semaphore.h"
+#include "visual/visual.h"
+
+#include <ncurses.h>
 #include <pthread.h>
+#include <stdlib.h>
 
-semaphore *sem;
+/*
+ * @struct thread_args
+ * @brief All arg to use in thread.
+ * * Struct with args to use in thread.
+ */
+typedef struct thread_args {
 
-void* wait_for_key() {
-    // Wait for the 'q' key to be pressed
-    semaphore_wait(sem);
-    listener_wait('q');
-    printw("Key 'q' pressed!\n");
-    semaphore_signal(sem);
-    return NULL;
-}
+  semaphore *sem;
+  int player;
+  unsigned work_is_done;
+
+} thread_args;
+
+thread_args *create_thread_args(semaphore *sem, int player);
+void *wait_for_key(void *arg);
 
 int main() {
-    listener_init();
-    sem = malloc(sizeof(semaphore));
-    semaphore_init(sem, 1);
+  init_game();
 
-    pthread_t thread;
-    pthread_create(&thread, NULL, wait_for_key, NULL);
+  semaphore *sem = malloc(sizeof(semaphore));
+  semaphore_init(sem, 1);
 
-    printw("Waiting for 'q' key press...\n"); // Use printw while the listener is active
-    refresh(); // Call refresh after printw (apparently it's to apply the changes to the screen but it seems to work without it , but the example I found use it)
+  WINDOW *menu = print_menu();
 
-    semaphore_wait(sem);
+  int running = 1;
+  short number_of_players;
 
-    printw("Exiting listener and semaphore.\n"); // This message should never be seen because the listener is holding the semaphore
-    refresh();
-    pthread_join(thread, NULL);
+  while (running) {
+    clear();
+    wrefresh(menu);
+    number_of_players = ask_player_number();
 
-    semaphore_signal(sem);
+    unsigned char players = start_players(number_of_players);
+
+    for (unsigned short i = number_of_players; i > 0; i--) {
+      // TODO: Players event
+    }
 
     semaphore_destroy(sem);
-    listener_destroy();
-    printf("Exiting program.\n");
+    delete_window(menu);
+    exit_game();
     return 0;
+  }
+}
+
+thread_args *create_thread_args(semaphore *sem, int player) {
+
+  thread_args *args = (thread_args *)malloc(sizeof(thread_args));
+
+  if (!args)
+    return NULL;
+
+  args->sem = sem;
+  args->player = player;
+  args->work_is_done = 0;
+
+  return args;
+}
+
+void *wait_for_key(void *arg) {
+
+  thread_args *args = (thread_args *)arg;
+
+  semaphore_wait(args->sem);
+  listener_wait(get_player_key(args->player));
+
+  printw("Player(%hu) pressed!\n", get_player_ID(args->player));
+
+  semaphore_signal(args->sem);
+  return NULL;
 }
