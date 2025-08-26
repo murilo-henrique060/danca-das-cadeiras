@@ -13,6 +13,7 @@
 #define PLAYER_5 (1 << 4) // 0b00010000
 
 #define PLAYERS_ARRAY {PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4, PLAYER_5}
+#define PLAYER_KEYS {'a', 'f', 'j', 'l', ' '}
 
 /*
  * @brief Init the game.
@@ -67,6 +68,22 @@ unsigned short player_is_active(unsigned char players, int current_player);
  * @return All players activated.
  */
 unsigned char start_players(int number_of_players);
+
+/*
+ * @brief ID of the player.
+ * * Will get the player ID.
+ * @param player Number to represent current players.
+ * @return Player's ID.
+ */
+unsigned short get_player_ID(int player);
+
+/*
+ * @brief Get key of the player.
+ * * Will get the key of the current player.
+ * @param player Number to represent current players.
+ * @return Key of the player.
+ */
+char get_player_key(int player);
 
 /*
  * @brief Start a counter.

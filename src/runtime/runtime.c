@@ -118,6 +118,25 @@ unsigned char start_players(int number_of_players) {
   return players;
 }
 
+unsigned short get_player_ID(int player) {
+  unsigned char all_players[] = PLAYERS_ARRAY;
+
+  for (unsigned short i = 0; i < sizeof(all_players); i++) {
+    if (all_players[i] & player)
+      return i + 1;
+  }
+}
+
+char get_player_key(int player) {
+  unsigned char all_players[] = PLAYERS_ARRAY;
+  char keys[] = PLAYER_KEYS;
+
+  for (int i = 0; i < sizeof(all_players); i++) {
+    if (all_players[i] & player)
+      return keys[i];
+  }
+}
+
 void start_round_counter() {
   clear();
   printw("Iniciando próximo round (aperte qualquer tecla) \n");
