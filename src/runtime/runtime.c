@@ -114,8 +114,8 @@ void add_player(unsigned char *players, int added_player) {
   *players |= added_player; // OR gate to add a player
 }
 
-unsigned short player_is_active(unsigned char players, int current_player) {
-  if (players & current_player)
+unsigned short player_is_active(unsigned char *players, int current_player) {
+  if (*players & current_player)
     return 1;
   else
     return 0;
