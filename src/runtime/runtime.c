@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <ncurses.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "runtime.h"
@@ -11,10 +12,6 @@ void init_game() {
   initscr();
   noecho();
   curs_set(0);
-
-  // if the terminal has colors
-  if (has_colors())
-    start_color();
 
   // update the terminal
   refresh();
@@ -34,10 +31,22 @@ void exit_game() {
   endwin();
 }
 
-short ask_player_number() {
+void print_manual() {
+  clear();
+
+  char players_keys[] = PLAYER_KEYS;
+  for (int i = 0; i < (int)sizeof(players_keys); i++)
+    printw("Player(%d) irá usar a tecla: '%c'\n", i + 1, players_keys[i]);
+
+  printw("Pressione qualquer tecla para continuar.\n");
+  refresh();
+  getch();
+}
+
+int ask_player_number() {
   char response = '0';
-  short choiced_number = -1;
-  unsigned i = 0;
+  int choiced_number = -1;
+  int i = 0;
 
   do {
 
@@ -78,31 +87,35 @@ short ask_player_number() {
   } while (choiced_number < MIN_PLAYERS || choiced_number > MAX_PLAYERS);
 
   clear();
-  printw("Número de jogadores escolhido foi %hu.\n", choiced_number);
+  printw("Número de jogadores escolhido foi %d.\n", choiced_number);
   refresh();
-  sleep(1);
+  sleep(2);
 
   return choiced_number;
 }
 
-short get_number_of_players(unsigned char players) {
-  unsigned short counter = 0;
+int get_number_of_players(unsigned char *players) {
+  int counter = 0;
   unsigned char all_players[] = PLAYERS_ARRAY;
 
   for (int i = 0; i < MAX_PLAYERS; i++) {
-    if (all_players[i] & players) // AND gate with players
+    if (all_players[i] & *players) // AND gate with players
       counter++;
   }
 
   return counter;
 }
 
-unsigned char remove_player(unsigned char players, int removed_player) {
-  return (players & ~removed_player); // AND gate to remove a player
+void remove_player(unsigned char *players, int removed_player) {
+  *players = (*players & ~removed_player); // AND gate to remove a player
 }
 
-unsigned short player_is_active(unsigned char players, int current_player) {
-  if (players & current_player)
+void add_player(unsigned char *players, int added_player) {
+  *players |= added_player; // OR gate to add a player
+}
+
+unsigned short player_is_active(unsigned char *players, int current_player) {
+  if (*players & current_player)
     return 1;
   else
     return 0;
@@ -118,23 +131,29 @@ unsigned char start_players(int number_of_players) {
   return players;
 }
 
-unsigned short get_player_ID(int player) {
+int get_player_ID(int player) {
   unsigned char all_players[] = PLAYERS_ARRAY;
 
-  for (unsigned short i = 0; i < sizeof(all_players); i++) {
+  for (int i = 0; i < (int)sizeof(all_players); i++) {
     if (all_players[i] & player)
       return i + 1;
   }
+
+  // if player doesn't exist
+  exit(1);
 }
 
 char get_player_key(int player) {
   unsigned char all_players[] = PLAYERS_ARRAY;
   char keys[] = PLAYER_KEYS;
 
-  for (int i = 0; i < sizeof(all_players); i++) {
+  for (int i = 0; i < (int)sizeof(all_players); i++) {
     if (all_players[i] & player)
       return keys[i];
   }
+
+  // if the key doesn't exist
+  exit(1);
 }
 
 void start_round_counter() {

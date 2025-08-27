@@ -56,3 +56,6 @@ dkms.conf
 
 # lsp configuration
 *.clangd
+
+# docs files
+docs/
