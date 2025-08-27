@@ -33,15 +33,15 @@ void exit_game();
  * number of players.
  * @return Number of player of the game.
  */
-short ask_player_number();
+int ask_player_number();
 
 /*
  * @brief Get active players.
  * * Get how many players is in the game.
- * @param players Number to represent active players.
+ * @param players Pointer of a number to represent active players.
  * @return Number of active players.
  */
-short get_number_of_players(unsigned char players);
+int get_number_of_players(unsigned char *players);
 
 /*
  * @brief Remove a player.
@@ -74,7 +74,7 @@ unsigned char start_players(int number_of_players);
  * @param player Number to represent current players.
  * @return Player's ID.
  */
-unsigned short get_player_ID(int player);
+int get_player_ID(int player);
 
 /*
  * @brief Get key of the player.

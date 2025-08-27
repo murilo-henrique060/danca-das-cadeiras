@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <ncurses.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "runtime.h"
@@ -34,10 +35,10 @@ void exit_game() {
   endwin();
 }
 
-short ask_player_number() {
+int ask_player_number() {
   char response = '0';
-  short choiced_number = -1;
-  unsigned i = 0;
+  int choiced_number = -1;
+  int i = 0;
 
   do {
 
@@ -85,12 +86,12 @@ short ask_player_number() {
   return choiced_number;
 }
 
-short get_number_of_players(unsigned char players) {
-  unsigned short counter = 0;
+int get_number_of_players(unsigned char *players) {
+  int counter = 0;
   unsigned char all_players[] = PLAYERS_ARRAY;
 
   for (int i = 0; i < MAX_PLAYERS; i++) {
-    if (all_players[i] & players) // AND gate with players
+    if (all_players[i] & *players) // AND gate with players
       counter++;
   }
 
@@ -118,23 +119,29 @@ unsigned char start_players(int number_of_players) {
   return players;
 }
 
-unsigned short get_player_ID(int player) {
+int get_player_ID(int player) {
   unsigned char all_players[] = PLAYERS_ARRAY;
 
-  for (unsigned short i = 0; i < sizeof(all_players); i++) {
+  for (int i = 0; i < (int)sizeof(all_players); i++) {
     if (all_players[i] & player)
       return i + 1;
   }
+
+  // if player doesn't exist
+  exit(1);
 }
 
 char get_player_key(int player) {
   unsigned char all_players[] = PLAYERS_ARRAY;
   char keys[] = PLAYER_KEYS;
 
-  for (int i = 0; i < sizeof(all_players); i++) {
+  for (int i = 0; i < (int)sizeof(all_players); i++) {
     if (all_players[i] & player)
       return keys[i];
   }
+
+  // if the key doesn't exist
+  exit(1);
 }
 
 void start_round_counter() {
