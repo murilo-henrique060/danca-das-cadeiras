@@ -27,6 +27,8 @@ void init_game();
  */
 void exit_game();
 
+void print_manual();
+
 /*
  * @brief Ask to use how many player will play.
  * * Will show a message on Terminal and read the user response to return the
@@ -50,6 +52,8 @@ int get_number_of_players(unsigned char *players);
  * @param removed_player Player to remove.
  */
 void remove_player(unsigned char *players, int removed_player);
+
+void add_player(unsigned char *players, int added_player);
 
 /*
  * @brief Check a player.

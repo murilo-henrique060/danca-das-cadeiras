@@ -31,6 +31,18 @@ void exit_game() {
   endwin();
 }
 
+void print_manual() {
+  clear();
+
+  char players_keys[] = PLAYER_KEYS;
+  for (int i = 0; i < (int)sizeof(players_keys); i++)
+    printw("Player(%d) irá usar a tecla: '%c'\n", i + 1, players_keys[i]);
+
+  printw("Pressione qualquer tecla para continuar.\n");
+  refresh();
+  getch();
+}
+
 int ask_player_number() {
   char response = '0';
   int choiced_number = -1;
@@ -96,6 +108,10 @@ int get_number_of_players(unsigned char *players) {
 
 void remove_player(unsigned char *players, int removed_player) {
   *players = (*players & ~removed_player); // AND gate to remove a player
+}
+
+void add_player(unsigned char *players, int added_player) {
+  *players |= added_player; // OR gate to add a player
 }
 
 unsigned short player_is_active(unsigned char players, int current_player) {
