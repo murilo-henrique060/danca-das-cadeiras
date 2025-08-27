@@ -46,11 +46,10 @@ short get_number_of_players(unsigned char players);
 /*
  * @brief Remove a player.
  * * Remove a player from active players.
- * @param players Number to represent active players.
+ * @param players Pointer to a number wich represent active players.
  * @param removed_player Player to remove.
- * @return New active players.
  */
-unsigned char remove_player(unsigned char players, int removed_player);
+void remove_player(unsigned char *players, int removed_player);
 
 /*
  * @brief Check a player.

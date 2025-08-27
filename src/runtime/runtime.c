@@ -97,8 +97,8 @@ short get_number_of_players(unsigned char players) {
   return counter;
 }
 
-unsigned char remove_player(unsigned char players, int removed_player) {
-  return (players & ~removed_player); // AND gate to remove a player
+void remove_player(unsigned char *players, int removed_player) {
+  *players = (*players & ~removed_player); // AND gate to remove a player
 }
 
 unsigned short player_is_active(unsigned char players, int current_player) {
