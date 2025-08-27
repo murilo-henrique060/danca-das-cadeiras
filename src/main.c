@@ -3,7 +3,7 @@
 #include "semaphore/semaphore.h"
 #include "visual/visual.h"
 
-#include <bits/pthreadtypes.h>
+#include <locale.h>
 #include <ncurses.h>
 #include <pthread.h>
 #include <stdlib.h>
@@ -19,7 +19,7 @@ typedef struct thread_args {
   semaphore *sem;              // main semaphore
   unsigned char *players;      // bitmask of current players
   int player;                  // current player
-  unsigned char *safe_players; // bitmas of won players
+  unsigned char *safe_players; // bitmask of winner players
   pthread_mutex_t *mutex;      // mutex to add safe players
   pthread_cond_t *cond;        // condition to sync the thread
 
@@ -32,6 +32,9 @@ void *wait_for_key(void *arg);
 void free_thread_args(thread_args *args);
 
 int main() {
+  // to use accentuation
+  setlocale(LC_ALL, "");
+
   init_game();
 
   // create a semaphore
@@ -105,7 +108,7 @@ int main() {
 
       pthread_mutex_lock(&round_mutex);
       while (get_number_of_players(&safe_players) < current_players_count - 1) {
-        // Dorme e espera ser acordado por um sinal das threads
+        // sleep and wait to wake up by a signal
         pthread_cond_wait(&round_cond, &round_mutex);
       }
       pthread_mutex_unlock(&round_mutex);
