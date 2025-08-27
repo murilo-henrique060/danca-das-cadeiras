@@ -20,7 +20,7 @@ all: $(TARGET)
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $@ $^ $(LDFLAGS)
 
-run:
+run: all
 	./$(TARGET)
 
 clean:
