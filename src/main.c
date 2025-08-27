@@ -29,12 +29,12 @@ typedef struct thread_args {
 /**
  * @brief Create args to player thread share.
  * * Will create args to a player thread to share the information.
- * @param *sem Pointer to shared semaphore
- * @param *players Pointer to active players
+ * @param sem Pointer to shared semaphore
+ * @param players Pointer to active players
  * @param player Current thread player
- * @param *safe_players Pointer to shared players safe
- * @param *mutex Pointer to shared mutex of the threads
- * @param *cond Pointer to condition to wake up a thread
+ * @param safe_players Pointer to shared players safe
+ * @param mutex Pointer to shared mutex of the threads
+ * @param cond Pointer to condition to wake up a thread
  * @return Thread arguments.
  */
 thread_args *create_thread_args(semaphore *sem, unsigned char *players,
@@ -43,13 +43,13 @@ thread_args *create_thread_args(semaphore *sem, unsigned char *players,
 /**
  * @brief The player will wait the current pressed key
  * * The player will will press the his key to continue in game
- * @param *arg Thread args to comunicate with other threads
+ * @param arg Thread args to comunicate with other threads
  */
 void *wait_for_key(void *arg);
 
 /**
  * @brief Cleanup the thread args
- * @param *args Thread args with shared data
+ * @param args Thread args with shared data
  */
 void free_thread_args(thread_args *args);
 

@@ -84,7 +84,7 @@ int ask_player_number();
 /**
  * @brief Get active players.
  * * Get how many players is in the game.
- * @param *players Pointer of a number to represent active players.
+ * @param players Pointer of a number to represent active players.
  * @return Number of active players.
  */
 int get_number_of_players(unsigned char *players);
@@ -92,7 +92,7 @@ int get_number_of_players(unsigned char *players);
 /**
  * @brief Remove a player.
  * * Remove a player from active players.
- * @param *players Pointer to a number wich represent active players.
+ * @param players Pointer to a number wich represent active players.
  * @param removed_player Player to remove.
  */
 void remove_player(unsigned char *players, int removed_player);
@@ -100,7 +100,7 @@ void remove_player(unsigned char *players, int removed_player);
 /**
  * @brief Add a player.
  * * Add a player from active players.
- * @param *players Pointer to a number wich represent active players.
+ * @param players Pointer to a number wich represent active players.
  * @param added_player Player to add.
  */
 void add_player(unsigned char *players, int added_player);
