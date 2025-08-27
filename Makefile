@@ -38,7 +38,7 @@ show_docs: docs
 	xdg-open "docs/html/index.html"
 
 show_pdf: pdf
-	xdg-open "docs/latexrefman.pdf"
+	xdg-open "docs/latex/refman.pdf"
 
 help:
 	@echo "Comandos disponíveis:"
