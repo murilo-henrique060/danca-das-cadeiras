@@ -75,9 +75,9 @@ int ask_player_number() {
   } while (choiced_number < MIN_PLAYERS || choiced_number > MAX_PLAYERS);
 
   clear();
-  printw("Número de jogadores escolhido foi %hu.\n", choiced_number);
+  printw("Número de jogadores escolhido foi %d.\n", choiced_number);
   refresh();
-  sleep(1);
+  sleep(2);
 
   return choiced_number;
 }
