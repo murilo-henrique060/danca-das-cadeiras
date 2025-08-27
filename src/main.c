@@ -9,24 +9,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-/*
+/**
  * @struct thread_args
  * @brief All arg to use in thread.
  * * Struct with args to use in thread.
  */
 typedef struct thread_args {
 
-  semaphore *sem;              // main semaphore
-  unsigned char *players;      // bitmask of current players
-  int player;                  // current player
-  unsigned char *safe_players; // bitmask of winner players
-  pthread_mutex_t *mutex;      // mutex to add safe players
-  pthread_cond_t *cond;        // condition to sync the thread
+  semaphore *sem;         ///< Pointer to shared main semaphore
+  unsigned char *players; ///< Pointer to the shared bitmask of current players
+  int player;             ///< current player
+  unsigned char
+      *safe_players;      ///< Pointer to the shared bitmask of winner players
+  pthread_mutex_t *mutex; ///< Pointes to shared mutex to add safe players
+  pthread_cond_t *cond;   ///< Pointer to shared condition to sync the thread
 
 } thread_args;
 
-/*
- *@brief Create args to player thread share.
+/**
+ * @brief Create args to player thread share.
  * * Will create args to a player thread to share the information.
  * @param *sem Pointer to shared semaphore
  * @param *players Pointer to active players
@@ -39,14 +40,14 @@ typedef struct thread_args {
 thread_args *create_thread_args(semaphore *sem, unsigned char *players,
                                 int player, unsigned char *safe_players,
                                 pthread_mutex_t *mutex, pthread_cond_t *cond);
-/*
+/**
  * @brief The player will wait the current pressed key
  * * The player will will press the his key to continue in game
  * @param *arg Thread args to comunicate with other threads
  */
 void *wait_for_key(void *arg);
 
-/*
+/**
  * @brief Cleanup the thread args
  * @param *args Thread args with shared data
  */
@@ -116,7 +117,7 @@ int main() {
       int thread_index = 0;
 
       for (int j = 0; j < MAX_PLAYERS; j++) {
-        if (player_is_active(players, all_players[j])) {
+        if (player_is_active(&players, all_players[j])) {
           args[thread_index] =
               create_thread_args(sem, &players, all_players[j], &safe_players,
                                  &round_mutex, &round_cond);
@@ -158,7 +159,7 @@ int main() {
 
     // ---- Winner Player ----
     for (int i = 0; i < MAX_PLAYERS; i++) {
-      if (player_is_active(players, all_players[i])) {
+      if (player_is_active(&players, all_players[i])) {
         clear();
         printw("O Player(%d) ganhou!!!\n", get_player_ID(all_players[i]));
         printw("Aperte qualquer botão.\n");
