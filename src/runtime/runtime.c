@@ -13,10 +13,6 @@ void init_game() {
   noecho();
   curs_set(0);
 
-  // if the terminal has colors
-  if (has_colors())
-    start_color();
-
   // update the terminal
   refresh();
 }
