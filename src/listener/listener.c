@@ -2,35 +2,26 @@
 #include <ncurses.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include <unistd.h>
-
-typedef struct {
-    char key;
-    unsigned int status;
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
-} ListenerKey;
-
-typedef struct {
-    pthread_t thread;
-
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
-    
-    unsigned int size;
-    ListenerKey** keys;
-} Listener;
 
 void* listener_listen(void* arg) {
     Listener* listener = (Listener*)arg;
     ListenerKey* listenerKey;
-    int ch, i;
+    int ch;
+    unsigned int i;
 
     pthread_cond_signal(&listener->cond); // Notify waiting threads
 
     // Main listening loop
     while (true) {
+        pthread_mutex_lock(&listener->mutex);
+        while (listener->size == 0) { // Wait for keys to be added
+            pthread_cond_wait(&listener->cond, &listener->mutex);
+        }
+        pthread_mutex_unlock(&listener->mutex);
+
+        nodelay(stdscr, TRUE); // Enable non-blocking input
         ch = getch(); // Get the pressed key, if many keys are pressed at once, each call to getch will get the next one in order
+        nodelay(stdscr, FALSE); // Disable non-blocking input
 
         pthread_mutex_lock(&listener->mutex); // Lock the listener to search for the key
         for (i = 0; i < listener->size; i++) { // Iterate over the listener keys
@@ -46,16 +37,12 @@ void* listener_listen(void* arg) {
         }
         pthread_mutex_unlock(&listener->mutex); // Release the listener lock
 
-        while (listener->size == 0) { // Wait for keys to be added
-            pthread_cond_wait(&listener->cond, &listener->mutex);
-        }
-
         pthread_testcancel(); // Check for cancellation requests, in case of a listener_destroy call 
     }
 }
 
 Listener* listener_init() {
-    initscr(); // Initialize ncurses
+    // initscr(); // Initialize ncurses
     cbreak(); // Disable line buffering
     noecho(); // Disable echoing of typed characters
     keypad(stdscr, TRUE); // Enable function keys
@@ -67,7 +54,7 @@ Listener* listener_init() {
     pthread_cond_init(&listener->cond, NULL);
 
     pthread_create(&listener->thread, NULL, listener_listen, listener); // Create the listener thread
-
+    
     pthread_mutex_lock(&listener->mutex); // Wait for the listener thread to initialize
     pthread_cond_wait(&listener->cond, &listener->mutex);
     pthread_mutex_unlock(&listener->mutex);
@@ -79,7 +66,7 @@ void listener_destroy(Listener* listener) {
     pthread_mutex_lock(&listener->mutex); // Lock the listener mutex to free its listenerKeys resources
 
     ListenerKey* listenerKey;
-    for (int i = 0; i < listener->size; i++) { // Iterate over the listener keys and free their resources
+    for (unsigned int i = 0; i < listener->size; i++) { // Iterate over the listener keys and free their resources
         listenerKey = listener->keys[i];
         if (listenerKey == NULL) continue;
 
@@ -123,7 +110,7 @@ void listener_unsubscribe(Listener* listener, ListenerKey* listenerKey) {
     pthread_mutex_lock(&listener->mutex);
 
     unsigned int listenerKeyId = 0;
-    for (int i = 0; i < listener->size; i++) {
+    for (unsigned int i = 0; i < listener->size; i++) {
         listenerKeyId = i;
         if (listener->keys[i] == listenerKey) {
             break;
@@ -144,16 +131,12 @@ void listener_unsubscribe(Listener* listener, ListenerKey* listenerKey) {
 void listener_wait(Listener* listener, char key) {
     ListenerKey* listenerKey = listener_subscribe(listener, key);
     
+
     pthread_mutex_lock(&listenerKey->mutex);
     while (!listenerKey->status) {
         pthread_cond_wait(&listenerKey->cond, &listenerKey->mutex);
     }
     pthread_mutex_unlock(&listenerKey->mutex);
-    
+
     listener_unsubscribe(listener, listenerKey);
 }
-
-typedef struct {
-    Listener* listener;
-    char key;
-} WaitForKeyArgs;

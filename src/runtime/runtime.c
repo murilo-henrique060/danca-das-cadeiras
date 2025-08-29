@@ -4,14 +4,14 @@
 #include <unistd.h>
 
 #include "runtime.h"
-#include "visual.h"
+#include "../visual/visual.h"
 
 void init_game() {
 
   // init the ncurses
   initscr();
-  noecho();
-  curs_set(0);
+  // noecho();
+  // curs_set(0);
 
   // update the terminal
   refresh();

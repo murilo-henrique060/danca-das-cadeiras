@@ -3,6 +3,7 @@
  * @author murilo-henrique060
  * @brief this file contains the implementation of the key listener 
  * @details The implementation of key listener consists of a main listener thread and a function that waits for the key to be stroked.
+ *          The ncurses must be initialized before it initialiization
  *          The lifecycle of the listener must be as follows:
  *              - A listener is created;
  *              - The wait function subscribes a key to be waited, it receives a struct with a flag representing if the key have been stroked;
@@ -13,6 +14,8 @@
 
 #ifndef LISTENER_H
 #define LISTENER_H
+
+#include <pthread.h>
 
 /**
  * @brief The waited key structure
