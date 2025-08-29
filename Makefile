@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic
-LDFLAGS = -lncurses
+LDFLAGS = -lncurses -lpthread
 
 .PHONY: all run clean docs show_docs pdf show_pdf help
 

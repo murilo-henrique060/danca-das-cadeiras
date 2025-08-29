@@ -54,7 +54,7 @@
 /**
  * @brief Shape of array with all player keys in order
  */
-#define PLAYER_KEYS {'a', 'f', 'j', 'l', 'b'}
+#define PLAYER_KEYS {'a', 'd', 'g', 'j', 'l'}
 
 /**
  * @brief Init the game.
