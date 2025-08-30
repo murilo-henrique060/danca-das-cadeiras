@@ -17,7 +17,7 @@
 typedef struct thread_args {
 
   semaphore *sem;         ///< Pointer to shared main semaphore
-  Listener *listener;    ///< Pointer to shared listener
+  Listener *listener;     ///< Pointer to shared listener
   unsigned char *players; ///< Pointer to the shared bitmask of current players
   int player;             ///< current player
   unsigned char
@@ -39,8 +39,9 @@ typedef struct thread_args {
  * @param cond Pointer to condition to wake up a thread
  * @return Thread arguments.
  */
-thread_args *create_thread_args(semaphore *sem, Listener *listener, unsigned char *players,
-                                int player, unsigned char *safe_players,
+thread_args *create_thread_args(semaphore *sem, Listener *listener,
+                                unsigned char *players, int player,
+                                unsigned char *safe_players,
                                 pthread_mutex_t *mutex, pthread_cond_t *cond);
 /**
  * @brief The player will wait the current pressed key
@@ -57,7 +58,7 @@ void free_thread_args(thread_args *args);
 
 int main() {
   // to use accentuation
-  // setlocale(LC_ALL, "");
+  setlocale(LC_ALL, "");
 
   init_game();
   // create a listener
@@ -122,8 +123,8 @@ int main() {
       for (int j = 0; j < MAX_PLAYERS; j++) {
         if (player_is_active(&players, all_players[j])) {
           args[thread_index] =
-              create_thread_args(sem, listener, &players, all_players[j], &safe_players,
-                                 &round_mutex, &round_cond);
+              create_thread_args(sem, listener, &players, all_players[j],
+                                 &safe_players, &round_mutex, &round_cond);
 
           pthread_create(&threads[thread_index], NULL, wait_for_key,
                          args[thread_index]);
@@ -189,8 +190,9 @@ int main() {
   return 0;
 }
 
-thread_args *create_thread_args(semaphore *sem, Listener *listener, unsigned char *players,
-                                int player, unsigned char *safe_players,
+thread_args *create_thread_args(semaphore *sem, Listener *listener,
+                                unsigned char *players, int player,
+                                unsigned char *safe_players,
                                 pthread_mutex_t *mutex, pthread_cond_t *cond) {
 
   thread_args *args = (thread_args *)malloc(sizeof(thread_args));
@@ -220,8 +222,6 @@ void *wait_for_key(void *arg) {
   // try get the semaphore
   semaphore_wait(args->sem);
 
-  int am_i_a_winner = 0;
-
   pthread_mutex_lock(args->mutex);
 
   int players_in_round = get_number_of_players(args->players);
@@ -230,18 +230,17 @@ void *wait_for_key(void *arg) {
   // just winners run this code
   if (safe_count < players_in_round - 1) {
     add_player(args->safe_players, args->player);
-    am_i_a_winner = 1;
 
+    // show safe message
+    printw("Player(%d) está a salvo!\n", get_player_ID(args->player));
+    refresh();
+
+    // signal to main thread
     pthread_cond_signal(args->cond);
   }
 
   pthread_mutex_unlock(args->mutex);
-  
-  if (am_i_a_winner) {
-    printw("Player(%d) está a salvo!\n", get_player_ID(args->player));
-    refresh();
-  }
-  
+
   return NULL;
 }
 
