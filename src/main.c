@@ -274,6 +274,6 @@ void draw_round_players_status(unsigned char *safe_players,
   for (int i = 0; i < MAX_PLAYERS; i++) {
     if (player_is_active(safe_players, all_players[i]))
       mvprintw(init_status_line + current_line++, 0,
-               "O Player(%d) está a salvo!\n", i);
+               "O Player(%d) está a salvo!\n", get_player_ID(all_players[i]));
   }
 }
