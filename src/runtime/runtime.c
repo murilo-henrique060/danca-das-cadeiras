@@ -162,12 +162,15 @@ void start_round_counter() {
   printw("Iniciando próximo round (aperte qualquer tecla) \n");
   getch();
 
+  clear();
+  refresh();
+
   for (int i = TIME_TO_START_ROUND; i > 0; i--) {
     printw("%d\n", i);
     refresh();
     sleep(1);
   }
 
-  printw("APERTE!!!!\n");
+  printw("APERTEM!!!!\n");
   refresh();
 }

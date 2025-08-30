@@ -56,6 +56,14 @@ void *wait_for_key(void *arg);
  */
 void free_thread_args(thread_args *args);
 
+/**
+ * @brief Draw all safe players in round.
+ * @param safe_players All safe players in round.
+ * @param players_in_round Total number of players in current round.
+ */
+void draw_round_players_status(unsigned char *safe_players,
+                               int players_in_round);
+
 int main() {
   // to use accentuation
   setlocale(LC_ALL, "");
@@ -136,6 +144,8 @@ int main() {
       while (get_number_of_players(&safe_players) < current_players_count - 1) {
         // sleep and wait to wake up by a signal
         pthread_cond_wait(&round_cond, &round_mutex);
+        draw_round_players_status(
+            &safe_players, current_players_count); // show all safe players
       }
       pthread_mutex_unlock(&round_mutex);
 
@@ -153,8 +163,11 @@ int main() {
       }
 
       printw("O Player(%d) foi eliminado!\n", get_player_ID(loser_player));
+      printw("Aperte qualquer tecla.\n");
       refresh();
-      sleep(2);
+      getch();
+
+      // update active players
       remove_player(&players, loser_player);
 
       pthread_mutex_destroy(&round_mutex);
@@ -231,10 +244,6 @@ void *wait_for_key(void *arg) {
   if (safe_count < players_in_round - 1) {
     add_player(args->safe_players, args->player);
 
-    // show safe message
-    printw("Player(%d) está a salvo!\n", get_player_ID(args->player));
-    refresh();
-
     // signal to main thread
     pthread_cond_signal(args->cond);
   }
@@ -247,4 +256,24 @@ void *wait_for_key(void *arg) {
 void free_thread_args(thread_args *args) {
   if (args)
     free(args);
+}
+
+void draw_round_players_status(unsigned char *safe_players,
+                               int players_in_round) {
+
+  const int init_status_line = TIME_TO_START_ROUND + 1;
+
+  // cleanup all status line
+  for (int i = 0; i < players_in_round; i++) {
+    move(init_status_line + i, 0);
+    clrtoeol();
+  }
+
+  int current_line = 0;
+  int all_players[] = PLAYERS_ARRAY;
+  for (int i = 0; i < MAX_PLAYERS; i++) {
+    if (player_is_active(safe_players, all_players[i]))
+      mvprintw(init_status_line + current_line++, 0,
+               "O Player(%d) está a salvo!\n", i);
+  }
 }
