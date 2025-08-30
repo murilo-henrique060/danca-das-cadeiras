@@ -4,14 +4,15 @@
 #include <unistd.h>
 
 #include "runtime.h"
-#include "../visual/visual.h"
+#include "visual.h"
 
 void init_game() {
 
   // init the ncurses
   initscr();
-  // noecho();
-  // curs_set(0);
+  cbreak();             // Disable line buffering
+  noecho();             // Disable echoing of typed characters
+  keypad(stdscr, TRUE); // Enable function keys
 
   // update the terminal
   refresh();
