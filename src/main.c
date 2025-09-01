@@ -66,7 +66,7 @@ void draw_round_players_status(unsigned char *safe_players,
 
 int main() {
   // to use accentuation
-  setlocale(LC_ALL, "");
+  // setlocale(LC_ALL, "");
 
   init_game();
   // create a listener
