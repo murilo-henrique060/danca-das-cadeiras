@@ -15,7 +15,7 @@ SRC = src/main.c \
 			src/runtime/runtime.c \
 			src/visual/visual.c
 
-TARGET = danca-das-cadeiras
+TARGET = danca-das-cadeiras.o
 
 all: $(TARGET)
 
