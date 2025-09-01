@@ -123,6 +123,11 @@ int main() {
       sleep(2);
       start_round_counter();
 
+      char ch = ' ';
+      nodelay(stdscr, TRUE); // Enable non-blocking input
+      while (ch != EOF) ch = getch(); // Cleaning character buffer
+      nodelay(stdscr, FALSE); // Disable non-blocking input
+
       // ---- Threads management ----
       pthread_t threads[current_players_count];
       thread_args *args[current_players_count];
