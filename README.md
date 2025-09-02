@@ -19,6 +19,17 @@ Entre no diretório do projeto
 ```bash
   cd danca-das-cadeiras 
 ```
+Compilando
+
+```bash
+  make
+```
+
+Rodando o executável
+
+```bash
+  ./danca-das-cadeiras.o
+```
 
 ## Ferramentas 
 
