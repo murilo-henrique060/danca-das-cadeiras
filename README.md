@@ -57,13 +57,34 @@ Rode o executável
   ./danca-das-cadeiras.o
 ```
 
-Obs: Para mais comandos utilize `make help`.
+Obs: Para mais comandos, utilize `make help`.
+
+## Compilação da Documentação
+
+Para a compilação da documentação é necessário as ferramentas `doxygen` e `graphviz` citadas nas [Dependências](#Dependências).
+
+Dentro do diretório, utilize o comando abaixo para mostrar a documentação em formato html:
+
+```bash
+  make show_docs
+```
+
+Caso queira ver em formato pdf, utilize o comando:
+
+```
+  make show_pdf
+```
+
+Obs: Para mais comandos, utilize `make help`.
 
 ## Dependências
 
-- GCC
-- Make
+- gcc
+- make
 - ncurses
+- doxygen (opcional para ver a documentação)
+- graphviz (opcional para ver os gráficos na documentação)
+- pdflatex (opcional para gerar a documentação em formato pdf)
 
 ## Ferramentas 
 <img width="48" src="https://avatars.githubusercontent.com/u/25699522?s=200&v=4" alt="c-logo"/>
