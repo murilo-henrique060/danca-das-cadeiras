@@ -31,7 +31,7 @@ O jogo ocorre de forma que múltiplos jogadores competem de forma simultânea, o
 
 As threads, utilizam máscara de bits para representar os jogadores, quando tem sua respectiva tecla pressionada enviam um sinal para o semáforo, caso ainda tenha espaço o contador será iterado e a thread correspondente é registrada como segura através de operações bit a bit. O mesmo ocorre para operações de adição de jogadores, remoção e verficação.
 
-## Rodando o Projeto 
+## Utilização do Projeto 
 
 Clone o projeto
 
@@ -44,17 +44,26 @@ Entre no diretório do projeto
 ```bash
   cd danca-das-cadeiras 
 ```
-Compilando
+
+Compile o projeto
 
 ```bash
   make
 ```
 
-Rodando o executável
+Rode o executável
 
 ```bash
   ./danca-das-cadeiras.o
 ```
+
+Obs: Para mais comandos utilize `make help`.
+
+## Dependências
+
+- GCC
+- Make
+- ncurses
 
 ## Ferramentas 
 <img width="48" src="https://avatars.githubusercontent.com/u/25699522?s=200&v=4" alt="c-logo"/>
